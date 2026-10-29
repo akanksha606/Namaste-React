@@ -78,17 +78,27 @@ export const Accordion = ({ title, count, isOpen, onToggle, children, level = 1 
   </div>
 );
 
-export const SubCategory = ({ sub }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <Accordion
-      level={2}
-      title={sub.title}
-      count={sub.itemCards.length}
-      isOpen={isOpen}
-      onToggle={() => setIsOpen(!isOpen)}
-    >
-      <ItemList items={sub.itemCards} />
-    </Accordion>
-  );
+export const SubCategory = ({ sub, isOpen, onToggle }) => (
+  <Accordion
+    level={2}
+    title={sub.title}
+    count={sub.itemCards.length}
+    isOpen={isOpen}
+    onToggle={onToggle}
+  >
+    <ItemList items={sub.itemCards} />
+  </Accordion>
+);
+
+export const NestedCategory = ({ categories }) => {
+  const [openSubIndex, setOpenSubIndex] = useState(null); // null = all closed
+  console.log("NestedCategory rendered", openSubIndex);
+  return categories.map((sub, i) => (
+    <SubCategory
+      key={sub.categoryId}
+      sub={sub}
+      isOpen={openSubIndex === i}
+      onToggle={() => setOpenSubIndex(openSubIndex === i ? null : i)}
+    />
+  ));
 };

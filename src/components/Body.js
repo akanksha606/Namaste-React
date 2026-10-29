@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import RestaurantCard , { RestaurantCardWithPromotedLabel } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 export default BodyComponent = () => {
   // State variable to hold the list of restaurants
@@ -33,7 +34,7 @@ export default BodyComponent = () => {
     fetchData();
   }, []);
  
-  console.log("body rendered");
+  const { loggedInUser, setUserName } = useContext(UserContext);
   const isUserOnline = useOnlineStatus();
 
   const ShowRestaurantCardWithPromotedLabel = RestaurantCardWithPromotedLabel(RestaurantCard);
@@ -90,6 +91,15 @@ export default BodyComponent = () => {
           >
             Top Rated Restaurants
           </button>
+          <div className="flex items-center">
+            <label className="mr-2">Username:</label>
+            <input
+              title="Username"
+              className="border border-solid border-2 border-black rounded-md p-2"
+              onChange={(e) => setUserName(e.target.value)}
+              value={loggedInUser}
+            />
+          </div>
         </div>
       </div>
 
